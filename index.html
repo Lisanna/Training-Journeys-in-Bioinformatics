@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="classification.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: auto;
+            max-width: 1280px;
+        }
+        node circle {
+            fill: #777777;
+            stroke: #2DC6FB;
+            stroke-width: 3px;
+        }
+        .node text {
+            font: 12px sans-serif;
+        }
+        .node text rect {
+            color: green;
+        }
+        .node--internal text {
+            text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
+        }
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 2px;
+        }
+        #tree-container {
+            width: 100%;
+            height: 35rem;
+        }
+        .node-class {
+            stroke: #05B4F0;
+        }
+        .node-topology {
+            stroke: #FA555A;
+        }
+        .node-fold {
+            stroke: #00BFA5;
+        }
+        .node-clan {
+            stroke: #00BFA5;
+        }
+        .node-click-false {
+            cursor: default !important;
+        }
+
+    </style>
+    <title>Tree widget</title>
+</head>
+
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<div class="container-fluid container-wide">
+    <div class="row">
+        <div class="col">
+            <h2 class="hborder text-center font-weight-bold txt">Browse classification</h2>
+            <p class="mt-4">
+                Navigate the classification by clicking on tree nodes. Click again to close the node and go back.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div id="tree-container"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    this.screenWidth = window.innerWidth;
+
+    // function to parse classification object into tree data structure
+    function classparseElement(element) {
+        return {
+            name: element.full_id + ' ' + element.short_description,
+            id: element.full_id,
+            type: element.type,
+            url: `classification/${element.full_id}`,
+            clickable: true,
+            children: []
+        };
+    }
+
+    // function to draw tree
+    function drawTree() {
+
+        // Define the zoom function for the zoomable tree
+        const zoom = () => {
+            if (d3.event.transform != null) {
+                svg.attr('transform', d3.event.transform );
+            }
+        };
+        // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+        const zoomListener = d3.zoom().scaleExtent([0.1, 3]).on('zoom', zoom);
+        // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
+        const centerNode = (source) => {
+            const t = d3.zoomTransform(svg.node());
+            let x = -source.y0;
+            // let y = -source.x0; // adoid y transition, fixed tree
+            let y = -180;
+            x = x * t.k + width / 2;
+            y = y * t.k + height / 2;
+            svg.transition().duration(duration)
+                .call( zoomListener.transform, d3.zoomIdentity.translate(x, y).scale(t.k) );
+        };
+
+        // update tree
+        const update = (source) => {
+
+            // Assigns the x and y position for the nodes
+            const treeStructure = treemap(root);
+
+            // Compute the new tree layout.
+            this.nodes = treeStructure.descendants();
+            this.links = treeStructure.descendants().slice(1);
+
+            // Normalize for fixed-depth.
+            const ratio = Math.round(this.screenWidth/12);
+            this.nodes.forEach(d => d.y = d.depth * ratio);
+
+            // ****************** Nodes section ***************************
+
+            // Update the nodes
+            const node = svg.selectAll('g.node')
+                .data(this.nodes, d =>  d['id'] || (d['id'] = ++i));
+
+            // Enter any new modes at the parent's previous position.
+            const nodeEnter = node.enter().append('g')
+                .attr('class', 'node')
+                .attr('transform', 'translate(' + source.y0 + ',' + source.x0 + ')')
+                .on('click', click);
+
+            // Add Circle for the nodes
+            nodeEnter.append('circle')
+                .attr('class', d => 'node node-' + d['data']['type'] + ' node-click-'+d['data']['clickable'].toString())
+                .attr('r', 1e-6);
+
+            // Add labels for the nodes
+
+            nodeEnter.append('rect')
+                .attr('y', '-6')
+                .attr('x', d => d['children'] || d['children'] ? -13 : 11)
+                .attr('height', '17')
+                .attr('width', d => d['children'] ? '0' : '100')
+                .attr('fill', 'white')
+            nodeEnter.append('text')
+                .attr('dy', '.35em')
+                .attr('x', d => d['children'] || d['children'] ? -13 : 13)
+                .attr('text-anchor', d => d['children'] || d['children'] ? 'end' : 'start')
+                .text(d => d['data'].name)
+            // .text(d => d['data'].name);
+
+            // UPDATE
+            // @ts-ignore
+            const nodeUpdate = nodeEnter.merge(node);
+
+            // Transition to the proper position for the node
+
+            nodeUpdate.transition()
+                .duration(duration)
+                // @ts-ignore
+                .attr('transform', d => 'translate(' + d.y + ',' + d.x + ')');
+
+            // Update the node attributes and style
+            nodeUpdate.select('circle.node')
+                .attr('r', 10)
+                .attr('cursor', 'pointer');
+
+
+            // Remove any exiting nodes
+            const nodeExit = node.exit().transition()
+                .duration(duration)
+                .attr('transform', d => 'translate(' + source.y + ',' + source.x + ')')
+                .remove();
+
+            // On exit reduce the node circles size to 0
+            nodeExit.select('circle')
+                .attr('r', 1e-6);
+
+            // On exit reduce the opacity of text labels
+            nodeExit.select('text')
+                .style('fill-opacity', 1e-6);
+
+            // ****************** links section ***************************
+
+            // Creates a curved (diagonal) path from parent to the child nodes
+            function diagonal(s, d) {
+                const path = `M ${s.y} ${s.x}
+                  C ${(s.y + d.y) / 2} ${s.x},
+                    ${(s.y + d.y) / 2} ${d.x},
+                    ${d.y} ${d.x}`;
+                return path;
+            }
+
+            // Update the links...
+            const link = svg.selectAll('path.link')
+                // @ts-ignore
+                // tslint:disable-next-line:only-arrow-functions
+                .data(this.links, function(d) {return d.id; });
+
+            // Enter any new links at the parent's previous position.
+            const linkEnter = link.enter().insert('path', 'g')
+                .attr('class', 'link')
+                .attr('d', d => {
+                    const o = {x: source.x0, y: source.y0};
+                    return diagonal(o, o);
+                });
+
+            // UPDATE
+            // @ts-ignore
+            const linkUpdate = linkEnter.merge(link);
+
+            // Transition back to the parent element position
+            linkUpdate.transition()
+                .duration(duration)
+                // @ts-ignore
+                .attr('d', d => diagonal(d, d.parent));
+
+            // Remove any exiting links
+            const linkExit = link.exit().transition()
+                .duration(duration)
+                .attr('d', d => {
+                    const o = {x: source.x, y: source.y};
+                    return diagonal(o, o);
+                })
+                .remove();
+
+            // Store the old positions for transition.
+            this.nodes.forEach(d => {
+                d.x0 = d.x;
+                d.y0 = d.y;
+            });
+
+        };
+
+        // Toggle children on click.
+        const click = (d) => {
+            // check if clickable
+            if (d.data.clickable) {
+                // toggle child component classification
+                this.identifier = d.data.id;
+                // toggle children opening/closing
+                if (d.children) {
+                    // closing
+                    d._children = d.children;
+                    d.children = null;
+                    // trigger zoom on parent
+                    // centerNode(d.parent);
+                } else {
+                    // opening
+                    d.children = d._children;
+                    d._children = null;
+                    // trigger zoom on node, only if childre
+                    // if (d.children) {centerNode(d); }
+                }
+                update(d);
+            }
+        };
+
+        // Collapse the node and all it's children
+        function collapse(d) {
+            if (d.children) {
+                d._children = d.children;
+                d._children.forEach(collapse);
+                d.children = null;
+            }
+        }
+
+        // Set the dimensions and margins of the diagram
+        const margin = {top: 20, right: 90, bottom: 30, left: 90};
+        const width = 500 - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        // appends a 'group' element to 'svg'
+        // moves the 'group' element to the top left margin
+        const svg = d3.select('#tree-container').append('svg')
+            .attr('width', '100%') // width + margin.right + margin.left)
+            .attr('height', '100%') // height + margin.top + margin.bottom)
+            .append('g')
+            .attr('transform', 'translate('
+                + margin.left + ',' + margin.top + ')');
+
+        let i = 0;
+        const duration = 750;
+        let root;
+
+        // declares a tree layout and assigns the size
+        const treemap = d3.tree().size([height, width]);
+
+        // Assigns parent, children, height, depth
+        root = d3.hierarchy(treeData, d => d.children);
+        root.x0 = height / 2;
+        root.y0 = 1;
+
+        // Collapse after the second level
+        root.children.forEach(collapse);
+
+        update(root);
+
+    }
+
+    const calculateposition = (a) => {
+        const fullida = a.full_id.split('.').concat(Array(4).fill('0')).slice(0, 4);
+        return fullida.reverse().map((n, i) => n * Math.pow(10, i * i)).reduce((t, n) => t + n);
+    };
+    // check unclassified
+    const re = /[Uu]nclassified/;
+    // init data for the tree
+    const treeData = {
+        name: 'RepeatsDB',
+        type: 'root',
+        clickable: false,
+        children: []
+    };
+    // remove class 1 instances
+    classification = classification.filter((e) => e.full_id.split('.')[0] > 1 );
+    // remove all unclassified
+    classification = classification.filter((e) => !re.exec(e.short_description));
+    // sort to create classes before subclasses
+    classification.sort((a, b) => {
+        if (calculateposition(a) !== calculateposition(b)) {
+            return calculateposition(a) - calculateposition(b);
+        } else {
+            return a.full_id.split('.').length - b.full_id.split('.').length;
+        }
+    });
+    for (const i in classification) {
+        const el = classification[i];
+        if (el.type === 'class') {
+            treeData.children.push(this.classparseElement(el));
+        } else if (el.type === 'topology') {
+            // last class created is the parent
+            const last = treeData.children.slice(-1)[0];
+            last.children.push(this.classparseElement(el));
+        } else if (el.type === 'fold') {
+            // last subclass created is the parent
+            const last = treeData.children.slice(-1)[0].children.slice(-1)[0];
+            last.children.push(this.classparseElement(el));
+        } else if (el.type === 'clan') {
+            // last subclass created is the parent
+            const last = treeData.children.slice(-1)[0].children.slice(-1)[0].children.slice(-1)[0];
+            last.children.push(this.classparseElement(el));
+        }
+    }
+    drawTree();
+
+</script>
+
+</body>
+
+</html>
