@@ -146,7 +146,6 @@
                 .attr('r', 1e-6);
 
             // Add labels for the nodes
-
             nodeEnter.append('rect')
                 .attr('y', '-6')
                 .attr('x', d => d['children'] || d['children'] ? -13 : 11)
@@ -318,7 +317,7 @@
     const re = /[Uu]nclassified/;
     // init data for the tree
     const treeData = {
-        name: 'RepeatsDB',
+        name: 'Persona',
         type: 'root',
         clickable: false,
         children: []
@@ -337,17 +336,17 @@
     });
     for (const i in classification) {
         const el = classification[i];
-        if (el.type === 'class') {
+        if (el.type === 'skill') {
             treeData.children.push(this.classparseElement(el));
-        } else if (el.type === 'topology') {
+        } else if (el.type === 'course') {
             // last class created is the parent
             const last = treeData.children.slice(-1)[0];
             last.children.push(this.classparseElement(el));
-        } else if (el.type === 'fold') {
+        } else if (el.type === 'next_level') {
             // last subclass created is the parent
             const last = treeData.children.slice(-1)[0].children.slice(-1)[0];
             last.children.push(this.classparseElement(el));
-        } else if (el.type === 'clan') {
+        } else if (el.type === 'next_next_level') {
             // last subclass created is the parent
             const last = treeData.children.slice(-1)[0].children.slice(-1)[0].children.slice(-1)[0];
             last.children.push(this.classparseElement(el));
