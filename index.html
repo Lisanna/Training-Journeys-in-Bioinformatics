@@ -303,7 +303,9 @@
         root.y0 = 1;
 
         // Collapse after the second level
-        root.children.forEach(collapse);
+        if (root.children) {
+            root.children.forEach(collapse);
+        }
 
         update(root);
 
