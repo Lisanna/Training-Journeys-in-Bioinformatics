@@ -4,7 +4,7 @@ let classification = [
         "full_id":"2",
         "parent":"2",
         "type":"skill",
-        "short_description":"S1",
+        "short_description":"Skill A",
         "link":""
     },
     {
@@ -12,7 +12,7 @@ let classification = [
         "full_id":"2.1",
         "parent":"2",
         "type":"course",
-        "short_description":"C1",
+        "short_description":"Course 1",
         "link":""
     },
     {
@@ -20,7 +20,7 @@ let classification = [
         "full_id":"2.2",
         "parent":"2",
         "type":"course",
-        "short_description":"Cx",
+        "short_description":"Course 2",
         "link":""
     },
     {
@@ -28,7 +28,7 @@ let classification = [
         "full_id":"2.3",
         "parent":"2",
         "type":"course",
-        "short_description":"Cy",
+        "short_description":"Course 3",
         "link":""
     },
     {
@@ -36,7 +36,7 @@ let classification = [
         "full_id":"3",
         "parent":"1",
         "type":"skill",
-        "short_description":"S2",
+        "short_description":"Skill B",
         "link":""
     },
     {
@@ -44,7 +44,7 @@ let classification = [
         "full_id":"3.1",
         "parent":"3",
         "type":"course",
-        "short_description":"C2",
+        "short_description":"Course 4",
         "link":""
     },
     {
@@ -52,7 +52,7 @@ let classification = [
         "full_id":"3.2",
         "parent":"3",
         "type":"course",
-        "short_description":"C3",
+        "short_description":"Course 5",
         "link":""
     }
 ]
