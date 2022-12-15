@@ -1,0 +1,128 @@
+name	annotation	parent
+Root	Tree root
+P1	Wet lab biologist that is able to visualise small dataset (R-focused)	Root
+P2	Biochemist who gets their transcriptomic dataset 	Root
+P3	Computational biologist who needs to start applying Machine Learning to their data	Root
+P4	Wet lab biologist that is able to reproducibly generate and store big datasets	Root
+P5	Computational biologist who needs to use an institutional HPC	Root
+P6	Data Scientist who want to test hypotheses in a large data set with several variables	Root
+P7	Computational Biologist who wants to visualize their data publicly and interactively (e.g. with publication)	Root
+P8	PhD student preparing first article	Root
+P9	Computational biologist who needs to build their own workflow	Root
+P10	Wet lab biologist with segmented image data	Root
+P11	Biologist submitting their first data sets publicly	Root
+P12	Computational biologist who needs to build their first web app to visualise their group data	Root
+P13	Wet lab biologist in experimental planning phase	Root
+P14	Computer scientist who needs to build/maintain data systems used by biologists  	Root
+P15	biologist looking for candidates in high-throughput screen	Root
+P16	Computational Biologist analysing their first scRNAseq dataset	Root
+P17	Computational Biologist analysing patient / human data	Root
+P18	Beginner computational biologist that need to work collaboratively on software	Root
+P19	"Lab manager, Data Manager or Wet lab scientist starting a new project with big data sets"	Root
+P20	Wet lab biologist that is able to visualise small dataset (Python-focused)	Root
+P21	Computational Biologist interested in metabolomics analyses	Root
+P22	Wet lab biologist in immunology wanting to analyse own or public data sets	Root
+S1	Programming in R	S2
+S2	Data visualisation (in R)	P1
+S3	FAIR -> Software focused / Git	P1
+S4	Data cleaning (with bash)	P2
+S5	Transcriptomics theory	P2
+S6	Transcriptomic data visualisation tools	P2
+S7	Machine Learning (theory)	P3
+S8	Machine Learning application in Python	P3
+S9	Deep Learning in Python	P3
+S10	Electronic lab notebooks	P4
+S11	FAIR -> Data focused	P3
+S12	Workflow management systems	P9
+S13	Cluster computing	P4
+S14	R shiny app programming	P12
+S15	FAIR principles	P7
+S16	Hosting and deployment of (scientific) apps (or specific to S14)	P12
+S18	Public data repositories	P11
+S19	HTML/CSS	P12
+S20	Javascript/Typescript coding	P12
+S21	Databases structure/format/languages	P12
+S22	"Backend vs frontend, website hosting"	P12
+S23	Single cell omics theory	S1
+S24	Single cell workflows	P16
+S25	Data protection	P17
+S26	Hypothesis testing	S30
+S27	Linear models	P6
+S28	Linear mixed models	S27
+S29	Multiple testing	S26
+S30	Statistical distributions	P13
+S31	Dimensionality reduction	P10
+S32	Linear algebra	P10
+S33	Feature selection	P10
+S34	Analysis of contingency tables	S26
+S35	Bayesian statistics	S27
+S36	Programming in Python	P20
+S37	Data visualisation (Python)	S36
+S38	"Software best practices (modularisation, testing..)"	P18
+S39	Experimental design	P13
+S40	Clustering	P10
+S41	Regularization	P6
+S42	Data Management Plans	P19
+S43	Metabolomics analysis tools	P21
+S44	Publicly available immunology datasets	P22
+S45	Bioinformatics tools for analysis of immunology data	P22
+T1	Introduction to R	S1
+T2	Introduction to Python	S36
+T3	Data visualisation in Python	T2
+T4	Data visualisation in R	T1
+T5	Orchestrating Single Cell Analysis	T1
+T6	Python essentials 1	S36
+T7	Introduction to R Shiny	T1
+T8	FAIR in (biological) practice	S15
+T9	Hosting shiny apps	T7
+T10	Boost your data management planning	S11
+T11	Single cell RNAseq analysis	T1
+T12	UCSC Genome Browser Basics	S6
+T13	Book chapter on hypothesis testing	S26
+T14	Hypothesis testing	S26
+T15	Demo testing in R	T14
+T16	Exercises testing in R	T14
+T17	PSU course materials on hypothesis testing	S26
+T18	EBI Biostatistics collection: Data visualization (R)	T1
+T19	EBI Biostatistics collection: statistical distributions	T18
+T20	EBI Biostatistics collection: Hypothesis testing	T19
+T21	Biostatistical basics: Distributions slides	S30
+T22	Biostatistical basics: Distributions demo	S30
+T23	Biostatistical basics: Distributions exercises	S30
+T24	R4ds: models chapter	S27
+T25	CRUK CI linear models	S27
+T26	Machine Learning application (Python)	S8
+T27	Deep Learning (Python)	S9
+T28	Reproducible research software	S3
+T29	r4ds	S1
+T30	Data Management Plans for Beginners	S42
+T31	Categorical data analysis	S34
+T32	Basic Git	T33
+T33	Advanced Git	S3
+T34	Essence of linear algebra	S32
+T35	Workflow management w/ Snakemake	S12
+T36	Collaborative coding	S3
+T37	Introduction to Empirical Bayes	S35
+T38	Statistical rethinking (book)	S28
+T39	Data Management Plans for Beginners	S11
+T40	Modular code development	S38
+T41	Software testing	S38
+T42	Building websites with GitLab	S22
+T43	Statistical rethinking (lecture series)	S28
+T44	CRUK-CI Experimental design	S39
+T45	MSMB: Experimental design	S39
+T46	Introduction to RNAseq and functional interpretation	S5
+T47	Containers	S38
+T48	High performance computing	S13
+T49	"Bayes theorem, the geometry of changing beliefs"	S35
+T50	HarvardX open online training	S26
+T51	FAIR in biological practice - video series	S15
+T52	edX course: Statistical learning	S40
+T53	Elements of statistical learning	S7
+T54	HTML / CSS Full course	S19
+T55	Electronic Lab Notebooks (ELN)	S10
+T56	JavaScript - Full Course for Beginners	S20
+T57	TypeScript Tutorial for Beginners	S20
+T58	Understanding the GDPR	S25
+T59	Introduction to Metabolomics Analysis Course	S43
+T60	Bioinformatics for Immunologists	S44

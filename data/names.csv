@@ -1,10 +1,20 @@
-name,parent,annotation
-Eve,,Eve is great
-Cain,Eve,Something else
-Seth,Eve,
-Enos,Seth,
-Noam,Seth,
-Abel,Eve,
-Awan,Eve,Hello there
-Enoch,Awan,
-Azura,Eve,
+name,parent,annotation,type,extra-parent
+P2,,,persona,
+S-advanced-1,P2,,skill,
+S3,P2,,skill,S-advanced-1
+S4,P2,,skill,
+S-advanced-2,P2,,skill,
+T1,S1,,training,
+T29,S1,,training,
+T4,S-advanced-1,,training,
+T29,S-advanced-1,,training,
+S1,S-advanced-1,,skill,
+T28,S3,,training,
+T32,S3,,training,
+T33,S3,,training,
+T36,S3,,training,
+S15,S3,,training,
+T46,S5,,training,
+T12,S-advanced-2,,training,
+T46,S-advanced-2,,training,
+S5,S-advanced-2,,skill,

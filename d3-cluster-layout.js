@@ -1,12 +1,16 @@
 "use strict";
 
 // ****************** get and reformat data ***************************
-d3.csv("./data/names.csv").then(function(data) {
+
+d3.tsv("./data/Training_personas.tsv").then(function(data) {
+//d3.csv("./data/names.csv").then(function(data) {
+    console.log(data)
 
     let root = d3.stratify()
         .id(function(d) { return d.name; })
         .parentId(function(d) { return d.parent; })
         (data);
+    console.log(root)
 
     // ****************** tree functions ***************************
 
@@ -97,21 +101,26 @@ d3.csv("./data/names.csv").then(function(data) {
                 .x(d => d.y)
                 .y(d => d.x));
 
-        const node = svg.append("g")
-            .selectAll("a")
-            .data(root.descendants())
-            .join("a")
+        svg.selectAll("g.node")
+
+
+        const node = svg.selectAll("g.node")
+            .data(descendants, d => d.data.name)
+
+        const nodeEnter = node.enter().append('g')
+            .attr('class', 'node')
+            .attr('class', d => 'node node-' + d.data.type)
             .attr("transform", d => `translate(${d.y},${d.x})`)
             .on('click', click);
 
-        node.append("circle")
+        nodeEnter.append("circle")
             .attr("fill", d => d.children ? stroke : fill)
             .attr("r", r);
 
-        if (title != null) node.append("title")
+        if (title != null) nodeEnter.append("title")
             .text(d => title(d.data, d));
 
-        if (L) node.append("text")
+        if (L) nodeEnter.append("text")
             .attr("dy", "0.32em")
             .attr("x", d => d.children ? -6 : 6)
             .attr("text-anchor", d => d.children ? "end" : "start")
@@ -124,7 +133,7 @@ d3.csv("./data/names.csv").then(function(data) {
     }
 
     let Treeoptions = {
-        label: d => d.data.name,
+        label: d => d.data.annotation,
         annotation: d => d.data.annotation,
         title: (d, n) => `${n.ancestors().reverse().map(d => d.data.name).join(".")}`, // hover text
         link: (d, n) => `https://github.com/prefuse/Flare/${n.children ? "tree" : "blob"}/master/flare/src/${n.ancestors().reverse().map(d => d.data.name).join("/")}${n.children ? "" : ".as"}`,
@@ -134,13 +143,13 @@ d3.csv("./data/names.csv").then(function(data) {
     }
 
     // Collapse the node and all it's children
-    function collapse(d) {
+    /*function collapse(d) {
         if (d.children) {
             d._children = d.children;
             d._children.forEach(collapse);
             d.children = null;
         }
-    }
+    }*/
 
     // Toggle children on click.
     function click(d) {
