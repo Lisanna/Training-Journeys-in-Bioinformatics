@@ -1,0 +1,35 @@
+---
+title: Journeys
+layout: default
+---
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>{{page.title}}</title>
+</head>
+
+<body>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="d3-cluster-layout.js"></script>
+
+<div class="container-fluid container-wide">
+    <div class="row">
+        <div class="col">
+            <p>
+                Following, a preliminary representation of the data collected <b>simplified in complexity</b>
+                (assuming that each step of the tree has only one parent, even if this is not the case because one skill
+                could be linked to multiple personas or multiple advanced skills). The persona, on the left, represents
+                the training aim. In the middle layers, the skills represent the path to it, with more advanced skills
+                on the left and more basic on the right. On the rightmost side, the courses are listed.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div id="tree-container"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
