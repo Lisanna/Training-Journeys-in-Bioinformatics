@@ -2,7 +2,7 @@
 
 // ****************** get and reformat data ***************************
 
-d3.tsv("./data/Training_personas.tsv").then(function(data) {
+d3.tsv("../data/tree-Training_personas.tsv").then(function(data) {
 //d3.csv("./data/names.csv").then(function(data) {
     console.log(data)
 

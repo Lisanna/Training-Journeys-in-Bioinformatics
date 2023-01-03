@@ -1,6 +1,7 @@
 /backup_docs/
 /backup_old_version/
-/_site/
-/.jekyll-cache/
-/.sass-cache/
-/Gemfile.lock
+/jekyll_backup/_site/
+/jekyll_backup/.jekyll-cache/
+/jekyll_backup/.sass-cache/
+/jekyll_backup/Gemfile.lock
+/jekyll_backup/

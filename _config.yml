@@ -1,9 +1,0 @@
-# Settings
-title: "Training in Bioinformatics"
-description: "Mapping the training journey in Bioinformatics"
-email: "lisanna.paladin@embl.de"
-
-# Build settings
-markdown: kramdown
-# theme: jekyll-theme-yat
-remote_theme: "jeffreytse/jekyll-theme-yat"
