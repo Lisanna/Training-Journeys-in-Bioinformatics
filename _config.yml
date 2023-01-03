@@ -5,4 +5,5 @@ email: "lisanna.paladin@embl.de"
 
 # Build settings
 markdown: kramdown
-theme: jekyll-theme-yat
+# theme: jekyll-theme-yat
+remote_theme: "jeffreytse/jekyll-theme-yat"
