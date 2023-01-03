@@ -5,3 +5,5 @@
 /jekyll_backup/.sass-cache/
 /jekyll_backup/Gemfile.lock
 /jekyll_backup/
+/training_journey_in_bioinformatics/_build/
+.idea
